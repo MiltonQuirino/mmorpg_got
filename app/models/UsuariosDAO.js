@@ -23,7 +23,7 @@ UsuariosDAO.prototype.autenticar = function(usuario, req, res){
           req.session.autorizado = true;
           req.session.usuario = result[0].usuario;
           req.session.nome = result[0].nome;
-          req.session.casa = result[0].casa
+          req.session.casa = result[0].casa;
         }
 
         if(req.session.autorizado){
