@@ -1,16 +1,23 @@
 module.exports.jogo = function(application, req, res){
-		if(!req.session.autorizado){
+		
+		console.log('Autorizado: ' + req.session.autorizado)
+		if(req.session.autorizado !== true){
 				res.send('Precisa estar logado para acessar a pagina');
 				return;
 		}
 		
+		var msg = '';
+		if(req.query.msg != ''){
+			msg = req.query.msg;
+		}
+
 		var usuario = req.session.usuario;
 		var casa = req.session.casa;
 
 		var connection = application.config.dbConnection;
 		var JogoDAO = new application.app.models.JogoDAO(connection);
 
-		JogoDAO.iniciaJogo(res, usuario, casa);
+		JogoDAO.iniciaJogo(res, usuario, casa, msg);
 	
 }
 
@@ -22,15 +29,56 @@ module.exports.sair = function(application, req, res){
 }
 
 module.exports.suditos = function(application, req, res){
-		
-		req.session.destroy(function(erro){
-			res.render('aldeoes', {validacao:{}});
-		});  	
+		if(req.session.autorizado !== true){
+				res.send('Precisa estar logado para acessar a pagina');
+				return;
+		}
+
+
+		res.render('aldeoes');
+		// req.session.destroy(function(erro){
+		// 	res.render('aldeoes', {validacao:{}});
+		// });  	
 }
 
 module.exports.pergaminhos = function(application, req, res){
 		
-		req.session.destroy(function(erro){
-			res.render('pergaminhos', {validacao:{}});
-		});  	
+		if(req.session.autorizado !== true){
+				res.send('Precisa estar logado para acessar a pagina');
+				return;
+		} 
+
+		var connection = application.config.dbConnection;
+		var JogoDAO = new application.app.models.JogoDAO(connection);
+		var usuario = req.session.usuario;
+		console.log('usuario '+usuario );
+		JogoDAO.getAcoes(usuario,res);
+}
+
+module.exports.ordenar_acao_sudito = function(application, req, res){
+		
+		if(req.session.autorizado !== true){
+				res.send('Precisa estar logado para acessar a pagina');
+				return;
+		}
+
+		var dadosForm = req.body;
+
+		req.assert('acao', 'Ação é obrigatorio').notEmpty();
+		req.assert('quantidade', 'Quantidade é obrigatorio').notEmpty();
+
+		var erros = req.validationErrors();
+
+		if(erros){
+			res.redirect('jogo?msg=A');
+			return;
+		}
+
+		var connection =application.config.dbConnection;
+		var JogoDAO = new application.app.models.JogoDAO(connection);
+		dadosForm.usuario = req.session.usuario;
+		JogoDAO.acao(dadosForm);
+
+		res.redirect('jogo?msg=B');
+		
 }

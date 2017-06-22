@@ -20,13 +20,66 @@ JogoDAO.prototype.gerarParametros = function (usuario) {
   });
 }
 
-JogoDAO.prototype.iniciaJogo = function (res, usuario, casa) {
+JogoDAO.prototype.iniciaJogo = function (res, usuario, casa, msg) {
 
   this._connection.open(function (erro, mongoClient) {
     mongoClient.collection('jogo', function (erro, collection) {
       var user = collection.find({usuario:usuario}).toArray(function (erro, result) {
        
-	      res.render('jogo',{img_casa: casa, jogo: result[0]})
+	      res.render('jogo',{img_casa: casa, jogo: result[0], msg: msg})
+        mongoClient.close();
+      });
+     
+    });
+  });
+}
+
+JogoDAO.prototype.acao = function (acao) {
+
+  console.log(acao);
+
+  this._connection.open(function (erro, mongoClient) {
+    mongoClient.collection('acao', function (erro, collection) {
+
+      var data = new Date();
+      var tempo = null;
+
+      switch(parseInt(acao.acao)){
+        case 1: 
+          tempo = 1 * 60 * 60000;
+          break;
+
+        case 2: 
+          tempo = 2 * 60 * 60000;
+          break;
+
+        case 3: 
+          tempo = 3 * 60 * 60000;
+          break;
+
+        case 4: 
+          tempo = 4 * 60 * 60000;
+          break;
+      }
+      acao.acao_termina_em = data.getTime() + tempo; 
+
+      collection.insert(acao);
+      mongoClient.close();
+    });
+  });
+
+}
+
+JogoDAO.prototype.getAcoes = function (usuario, res) {
+  this._connection.open(function (erro, mongoClient) {
+    mongoClient.collection('acao', function (erro, collection) {
+    
+      var date = new Date();
+      var momento_atual = date.getTime();
+    
+      collection.find({usuario:usuario, acao_termina_em : {$gt:momento_atual}}).toArray(function (erro, result) {
+       
+	      res.render('pergaminhos', { acoes: result });
         mongoClient.close();
       });
      
