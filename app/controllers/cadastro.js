@@ -13,7 +13,6 @@ module.exports.cadastrar = function(application, req , res){
   var erros = req.validationErrors();
 
   if(erros){
-    console.log(erros);
     res.render('cadastro', {validacao : erros, dadosForm: dadosForm});
     return;
   }
