@@ -1,6 +1,5 @@
 module.exports.jogo = function(application, req, res){
 		
-		console.log('Autorizado: ' + req.session.autorizado)
 		if(req.session.autorizado !== true){
 				res.send('Precisa estar logado para acessar a pagina');
 				return;
@@ -51,7 +50,7 @@ module.exports.pergaminhos = function(application, req, res){
 		var connection = application.config.dbConnection;
 		var JogoDAO = new application.app.models.JogoDAO(connection);
 		var usuario = req.session.usuario;
-		console.log('usuario '+usuario );
+
 		JogoDAO.getAcoes(usuario,res);
 }
 

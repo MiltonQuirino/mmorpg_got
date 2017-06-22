@@ -130,15 +130,7 @@ JogoDAO.prototype.revogarAcao = function (acao, res) {
           mongoClient.close();
         }
       );
-      // var date = new Date();
-      // var momento_atual = date.getTime();
-
-      // collection.find({usuario:usuario, acao_termina_em : {$gt:momento_atual}}).toArray(function (erro, result) {
-
-      //   res.render('pergaminhos', { acoes: result });
-      //   mongoClient.close();
-      // });
-
+    
     });
   });
 }
