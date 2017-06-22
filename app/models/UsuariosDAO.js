@@ -20,10 +20,17 @@ UsuariosDAO.prototype.autenticar = function(usuario, req, res){
     mongoClient.collection('usuarios',function(erro, collection){
       var user = collection.find(usuario).toArray(function(erro, result){
         if(result[0] != undefined){
+
           req.session.autorizado = true;
           req.session.usuario = result[0].usuario;
           req.session.nome = result[0].nome;
           req.session.casa = result[0].casa;
+          
+        }else{
+
+          var errors = [{  msg: 'usuário ou senha inválidos' }];
+          res.render('index', { validacao: errors });
+          return;
         }
 
         if(req.session.autorizado){
@@ -37,7 +44,12 @@ UsuariosDAO.prototype.autenticar = function(usuario, req, res){
     });
   });
   
-}
+} 
+
+	// if(erros){
+	// 		res.render("index", {validacao: erros});
+	// 		return;
+	// 	}
 
 module.exports = function(){
   return UsuariosDAO;

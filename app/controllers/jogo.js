@@ -33,11 +33,7 @@ module.exports.suditos = function(application, req, res){
 				return;
 		}
 
-
 		res.render('aldeoes');
-		// req.session.destroy(function(erro){
-		// 	res.render('aldeoes', {validacao:{}});
-		// });  	
 }
 
 module.exports.pergaminhos = function(application, req, res){
@@ -68,6 +64,8 @@ module.exports.ordenar_acao_sudito = function(application, req, res){
 
 		var erros = req.validationErrors();
 
+		
+console.log(erros);
 		if(erros){
 			res.redirect('jogo?msg=A');
 			return;

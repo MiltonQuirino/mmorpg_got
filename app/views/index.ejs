@@ -23,6 +23,7 @@
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container">
 
+			<%=validacao.length%>
 
 			<% if(validacao.length > 0 ){ %>
 				<div class="alert alert-danger">
@@ -43,7 +44,8 @@
 							<input type="text" name="usuario" id="usuario" placeholder="Usuário" class="form-control" autocomplete="off" />
 							<input type="password" name="senha" id="senha" placeholder="Senha" class="form-control" />
 							<button type="submit" class="btn btn-success">Entrar</button>
-							<button type="button" class="btn btn-info">Cadastro</button>
+							<a href="/cadastro" class="btn btn-info">Cadastro</a>
+							<!--<button type="button" >Cadastro</button>-->
 						</div>
 					</form>
 		</div>

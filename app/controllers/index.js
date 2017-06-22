@@ -9,7 +9,7 @@ module.exports.autenticar = function(application, req, res){
 		req.assert('senha','Senha é obrigatorio').notEmpty();
 
 		var erros = req.validationErrors();
-
+		console.log(erros);
 		if(erros){
 			res.render("index", {validacao: erros});
 			return;
