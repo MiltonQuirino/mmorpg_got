@@ -1,4 +1,3 @@
-//importar modulo mongo
 var mongo = require('mongodb');
 
 var connMongoDB = function(){
